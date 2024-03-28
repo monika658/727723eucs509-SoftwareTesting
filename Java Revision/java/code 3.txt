@@ -1,0 +1,58 @@
+
+import java.util.*;
+import java.sql.*;
+class A
+{
+    public static void main(String[]args)throws Exception
+    {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection cn=DriverManager.getConnection("jdbc:mysql://localhost/ri_db","test",
+        "test123");
+        Scanner scan=new Scanner(System.in);
+        int n=Integer.parseInt(scan.nextLine());
+        if(n==1)
+        {
+            int id=Integer.parseInt(scan.nextLine());
+            String name=scan.nextLine();
+            String contact=scan.nextLine();
+            String plan=scan.nextLine();
+            String pay=scan.nextLine();
+            PreparedStatement ps=cn.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?)");
+            ps.setInt(1,id);
+            ps.setString(2,name);
+            ps.setString(3,contact);
+            ps.setString(4,plan);
+            ps.setString(5,pay);
+            ps.execute();
+            System.out.println("Customer record inserted successfully.");
+        }
+        else if(n==2)
+        {
+            int id=Integer.parseInt(scan.nextLine());
+            String name=scan.nextLine();
+            String contact=scan.nextLine();
+            String plan=scan.nextLine();
+            String pay=scan.nextLine();
+            PreparedStatement ps=cn.prepareStatement("UPDATE customer SET name= ?,contact_information= ?,subscription_plan= ?,payment_history= ? WHERE customer_id=?;");
+            ps.setString(1,name);
+            ps.setString(2,contact);
+            ps.setString(3,plan);
+            ps.setString(4,pay);
+            ps.setInt(5,id);
+            ps.execute();
+            System.out.println("Customer record updated successfully.");
+        }
+        else if(n>3)
+        {
+            System.out.println("Invalid operation number. Please try again.");
+            return;
+        }
+        PreparedStatement st=cn.prepareStatement("SELECT * FROM customer");
+        ResultSet rs=st.executeQuery();
+        while(rs.next())
+        {
+            System.out.println("ID: "+rs.getInt(1)+", Name: "+rs.getString(2)+", Contact Information: "+rs.getString(3)+", Subscription Plan: "+rs.getString(4)+", Payment History: "+rs.getString(5));
+        }
+        cn.close();
+    }
+}

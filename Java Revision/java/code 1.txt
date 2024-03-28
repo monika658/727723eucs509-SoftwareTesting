@@ -1,0 +1,85 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Item {
+    private String name;
+    private double price;
+
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+
+class Cart {
+    private List<Item> items;
+
+    public Cart() {
+        items = new ArrayList<>();
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public double calculateTotalPrice() {
+        double totalPrice = 0.0;
+        for (Item item : items) {
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        Cart c = new Cart();
+
+        int num = sc.nextInt();
+        sc.nextLine(); 
+
+        for (int i = 0; i < num; i++) {
+            String itemName = sc.nextLine();
+            double itemPrice = sc.nextDouble();
+            sc.nextLine(); 
+
+            Item item = new Item(itemName, itemPrice);
+            c.addItem(item);
+        }
+
+        int numRemove = sc.nextInt();
+        sc.nextLine(); 
+
+        for (int i = 0; i < numRemove; i++) {
+            String NameRemove = sc.nextLine();
+            for (Item item : c.getItems()) {
+                if (item.getName().equals(NameRemove)) {
+                    c.removeItem(item);
+                    break;
+                }
+            }
+        }
+
+        double total = c.calculateTotalPrice();
+        System.out.println("Total Price after removing items: $" + total);
+
+        sc.close();
+    }
+}
